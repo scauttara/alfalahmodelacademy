@@ -31,7 +31,13 @@ const userSchema = new mongoose.Schema({
         default: 'active'
     }
 }, { timestamps: true });
-
+userSchema.index({ email: 1, mobile: 1 });
+userSchema.set('toJSON', {
+    transform: (doc, ret, options) => {
+        delete ret.password;
+        return ret;
+    }
+})
 const User = mongoose.model('User', userSchema)
 
 export default User

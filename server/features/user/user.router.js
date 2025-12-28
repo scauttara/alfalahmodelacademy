@@ -1,4 +1,3 @@
-import express from 'express';
 import { Router } from 'express';
 
 import { createUser } from './user.controller.js';
@@ -10,7 +9,10 @@ import { testUser } from './user.controller.js';
 const router = Router();
 
 router.get('/', getUser);
-router.get('/test', testUser);
 router.post('/', createUser);
+router.put('/:id', updateUser);
+router.delete('/:id', deleteUser);
+router.get('/test', testUser);
+
 
 export default router;
