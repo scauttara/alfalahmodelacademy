@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { api } from './api.js'
+import { api } from '../utils/api.js';
 
 const CreateUser = () => {
     const [formData, setFormData] = useState({
@@ -44,8 +44,6 @@ const CreateUser = () => {
     }
     return (
         <div className="create-user">
-            <Header />
-            <NavBar />
             <h2>Create User</h2>
             {message && <p>{message}</p>}
             <form onSubmit={handleSubmit}>

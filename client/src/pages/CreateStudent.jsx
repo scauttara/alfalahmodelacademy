@@ -1,17 +1,25 @@
 import React, { useState } from "react";
-import { api } from './api.js';
+import { api } from '../utils/api.js';
+import './CreateStudent.scss'
 
 const CreateStudent = () => {
     const [formData, setFormData] = useState({
         // User Basic Info
         name: '',
+        nameBN: '',  // Added for Bangla name
         mobile: '',
         email: '',
 
         // Student Profile Info (FIXED NAMING TO MATCH BACKEND)
-        fatherName: '',   // Was fathersName
+        fatherName: '',
+        fatherNameBN: '',  // Was fathersName
         motherName: '',   // Was mothersName
+        motherNameBN: '',   // Was mothersName
         dateOfBirth: '',  // Was dob
+        birthCertificateNo: '',
+        fatherNID: '',
+        motherNID: '',
+
         classGrade: '',
         version: 'Bangla',
         group: 'N/A',
@@ -60,8 +68,7 @@ const CreateStudent = () => {
     };
 
     return (
-        <div className="create-user">    <Header />
-            <NavBar />
+        <div className="create-user">
             <h2>Register New Student</h2>
             {message && <p className={`message ${statusType}`}>{message}</p>}
 
@@ -75,6 +82,10 @@ const CreateStudent = () => {
                         <input type="text" name="name" value={formData.name} onChange={handleChange} required placeholder="Full Name" />
                     </div>
                     <div className="form-group">
+                        <label>শিক্ষার্থীর নাম (বাংলা)</label>
+                        <input type="text" name="nameBN" value={formData.nameBN} onChange={handleChange} placeholder="Full Name (Bangla)" />
+                    </div>
+                    <div className="form-group">
                         <label>Mobile No. (Login ID) *</label>
                         <input type="text" name="mobile" value={formData.mobile} onChange={handleChange} required placeholder="017..." />
                     </div>
@@ -83,14 +94,24 @@ const CreateStudent = () => {
                         <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="student@example.com" />
                     </div>
                     <div className="form-group">
-                        <label>Father's Name *</label>
+                        <label>Father's Name</label>
                         {/* FIXED NAME */}
-                        <input type="text" name="fatherName" value={formData.fatherName} onChange={handleChange} required />
+                        <input type="text" name="fatherName" value={formData.fatherName} onChange={handleChange} />
                     </div>
                     <div className="form-group">
-                        <label>Mother's Name *</label>
+                        <label>বাবার নাম (বাংলা)</label>
                         {/* FIXED NAME */}
-                        <input type="text" name="motherName" value={formData.motherName} onChange={handleChange} required />
+                        <input type="text" name="fatherNameBN" value={formData.fatherNameBN} onChange={handleChange} />
+                    </div>
+                    <div className="form-group">
+                        <label>Mother's Name</label>
+                        {/* FIXED NAME */}
+                        <input type="text" name="motherName" value={formData.motherName} onChange={handleChange} />
+                    </div>
+                    <div className="form-group">
+                        <label>মায়ের নাম (বাংলা)</label>
+                        {/* FIXED NAME */}
+                        <input type="text" name="motherNameBN" value={formData.motherNameBN} onChange={handleChange} />
                     </div>
                 </div>
 
@@ -98,11 +119,22 @@ const CreateStudent = () => {
                 <div className="column">
                     <h3>Academic Profile</h3>
                     <div className="form-group">
-                        <label>Date of Birth *</label>
+                        <label>Date of Birth </label>
                         {/* FIXED NAME */}
-                        <input type="date" name="dateOfBirth" value={formData.dateOfBirth} onChange={handleChange} required />
+                        <input type="date" name="dateOfBirth" value={formData.dateOfBirth} onChange={handleChange} />
                     </div>
-
+                    <div className="form-group">
+                        <label>Birth Certificate No.</label>
+                        <input type="text" name="birthCertificateNo" value={formData.birthCertificateNo} onChange={handleChange} />
+                    </div>
+                    <div className="form-group">
+                        <label>Father's NID</label>
+                        <input type="text" name="fatherNID" value={formData.fatherNID} onChange={handleChange} />
+                    </div>
+                    <div className="form-group">
+                        <label>Mother's NID</label>
+                        <input type="text" name="motherNID" value={formData.motherNID} onChange={handleChange} />
+                    </div>
                     <div className="form-group">
                         <label>Class *</label>
                         <select name="classGrade" value={formData.classGrade} onChange={handleChange} required>
@@ -155,20 +187,6 @@ const CreateStudent = () => {
 
                 <button type="submit" style={{ gridColumn: 'span 2', marginTop: '10px' }}>Create Student Profile</button>
             </form>
-
-            <style jsx>{`
-                .create-user { max-width: 800px; margin: 0 auto; padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-                .form-group { margin-bottom: 15px; display: flex; flex-direction: column; }
-                label { font-weight: bold; margin-bottom: 5px; font-size: 0.9rem; color: #333; }
-                input, select { padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem; }
-                button { background-color: #0070f3; color: white; padding: 12px; border: none; border-radius: 4px; cursor: pointer; font-size: 1rem; font-weight: bold; }
-                button:hover { background-color: #005bb5; }
-                .message { padding: 10px; border-radius: 4px; margin-bottom: 20px; text-align: center; }
-                .message.success { color: #155724; background-color: #d4edda; border: 1px solid #c3e6cb; }
-                .message.error { color: #721c24; background-color: #f8d7da; border: 1px solid #f5c6cb; }
-                .message.info { color: #0c5460; background-color: #d1ecf1; border: 1px solid #bee5eb; }
-                .column { padding: 10px; }
-            `}</style>
         </div>
     );
 };

@@ -7,18 +7,43 @@ const studentSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    nameBN: {
+        type: String,
+        trim: true,
+    },
     fatherName: {
         type: String,
-        required: true,
-        default: 'Not Provided'
+        trim: true,
+
     },
+    fatherNameBN: {
+        type: String,
+        trim: true,
+    },
+
+    fatherNID: {
+        type: String,
+        trim: true,
+    },
+    motherNID: {
+        type: String,
+        trim: true,
+    },
+
     motherName: {
         type: String,
-        required: true,
-        default: 'Not Provided'
+        trim: true,
+    },
+    motherNameBN: {
+        type: String,
+        trim: true,
     },
     dateOfBirth: {
         type: Date,
+    },
+    birthCertificateNo: {
+        type: String,
+        trim: true,
     },
     classGrade: {
         type: String,
@@ -40,7 +65,7 @@ const studentSchema = new mongoose.Schema({
     }
 
 
-},   { timestamps: true })
+}, { timestamps: true })
 
 const StudentProfile = mongoose.model('Student', studentSchema);
 

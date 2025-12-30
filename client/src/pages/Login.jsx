@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {api} from './api.js'
+import {api} from '../utils/api.js'
 const Login = () => {
     const [formData, setFormData] = useState({
         identifier: "",

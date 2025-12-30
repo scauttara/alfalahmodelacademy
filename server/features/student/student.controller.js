@@ -8,9 +8,10 @@ export const createStudent = async (req, res) => {
     try {
         const {
             // User Data
-            name, mobile, email,
+            name, mobile, email, nameBN,
             // Student Profile Data
-            fatherName, motherName, dateOfBirth, classGrade, version, group, residentialStatus
+            fatherName, motherName, fatherNameBN, motherNameBN, dateOfBirth, birthCertificateNo,
+           fatherNID, motherNID, classGrade, version, group, residentialStatus
         } = req.body;
 
         // 1. Check if user already exists
@@ -42,9 +43,12 @@ export const createStudent = async (req, res) => {
         // 4. Create the Student Profile Document
         const newProfile = new StudentProfile({
             userId: savedUser._id,
-            fatherName,
-            motherName,
+            nameBN,
+            fatherName, motherName, fatherNameBN, motherNameBN,
             dateOfBirth,
+            birthCertificateNo,
+            fatherNID,
+            motherNID,
             classGrade,
             version,
             group,
