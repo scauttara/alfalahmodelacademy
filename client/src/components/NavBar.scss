@@ -1,0 +1,16 @@
+.primary-nav{
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    align-items: center;
+    justify-content: center;
+    
+    a{
+        background-color: rgb(11, 92, 25);
+        padding: 11px;
+        font-weight: bolder;
+        font-size: large;
+        text-decoration: none;
+        color: #ffffff;
+    }
+}

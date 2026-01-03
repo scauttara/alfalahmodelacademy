@@ -1,0 +1,83 @@
+.student-list-dashboard {
+  display: flex;
+  flex-direction: column;
+  width: 100;
+  align-items: center;
+
+  .search-tools {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .button {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      gap: 1vw;
+    }
+
+    .search-section {
+      display: flex;
+      justify-content: center;
+      padding: 1vw;
+
+      input {
+        width: 80%;
+        max-width: 450px;
+        padding-left: 4vw;
+        border-radius: 99vw;
+      }
+    }
+  }
+}
+
+.filter-settings{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1vw;
+    padding: 1vw;
+    align-items: center;
+    justify-content: center;
+
+    select{
+        cursor: pointer;
+        border-radius: 99vw;
+        border: 1px solid black;
+        box-shadow: 0px 0px 5px 0px #6d5dd9;
+        padding: 1vh;
+    }
+}
+
+.student-list {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  align-items: center;
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    max-width: 1024px;
+  }
+
+  th,
+  td {
+    text-align: left;
+    padding: 8px;
+    border: 1px solid #ddd;
+    
+  }
+
+  th {
+    background-color: #f2f2f2;
+  }
+
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+
+  tr:hover {
+    background-color: #ddd;
+  }
+}
