@@ -132,6 +132,31 @@ export default function ListAllStudents() {
         fetchStudents();
     }, []);
 
+// Export number functions with , and new lines. 
+    const handleExportNumbers = () => {
+        if (filteredStudents.length === 0) {
+            alert("No students to export.")
+            return
+        }
+
+        const numbersText = filteredStudents.map((student) => student.userId?.mobile?.slice(0, 11))
+            .filter((mobile) => mobile)
+            .join(',\n')
+
+        const blob = new Blob([numbersText], { type: 'text/plain' })
+        const url = URL.createObjectURL(blob)
+
+        const link = document.createElement('a')
+        link.href = url
+        // folder creation with naming. 
+        link.download = `student_numbers_${new Date().toISOString().slice(0, 10)}.txt`
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        URL.revokeObjectURL(url)
+
+    }
+
     // Clear filter
     const clearFilters = () => {
         setFilters({
@@ -160,6 +185,7 @@ export default function ListAllStudents() {
                         <button onClick={() => fetchStudents(true)} disabled={loading}>
                             {loading ? "Refreshing..." : "↻ Refresh Data"}
                         </button>
+                        <button onClick={handleExportNumbers}>Export Numbers</button>
                     </div>
                     <div className="search-section">
                         <br />
@@ -281,7 +307,7 @@ export default function ListAllStudents() {
                                                 {student.nameBN && <div>{student.nameBN}</div>}
                                             </td>
 
-                                            <td>{student.userId?.mobile}</td>
+                                            <td>{student.userId?.mobile?.slice(0, 11)}</td>
 
                                             <td>
                                                 {ClassLabels[student.classGrade]}
