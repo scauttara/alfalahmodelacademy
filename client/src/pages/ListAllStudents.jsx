@@ -9,7 +9,7 @@ import {
 } from "../utils/studentConstants.js";
 import { api } from "../utils/api";
 import NavBar from "../components/NavBar/NavBar.jsx";
-import CreateStudent from "./CreateStudent.jsx"; // Import the Create/Edit Form
+import CreateStudent from "./CreateStudent.jsx";
 
 export default function ListAllStudents() {
     const [loading, setLoading] = useState(false);
@@ -56,13 +56,12 @@ export default function ListAllStudents() {
                 ].some((field) => field?.toLowerCase().includes(query));
 
             // Drop-down filters
-            // Batch Filter Logic
             let matchesBatch = true;
             if (filters.batchCategory) {
                 const allowedClasses = ClassOptions[filters.batchCategory] || [];
                 matchesBatch = allowedClasses.includes(student.classGrade);
             }
-            // Other Filters
+            
             const matchesClass = filters.classGrade ? student.classGrade === filters.classGrade : true;
             const matchesVersion = filters.version ? student.version === filters.version : true;
             const matchesGroup = filters.group ? student.group === filters.group : true;
@@ -94,14 +93,12 @@ export default function ListAllStudents() {
     const fetchStudents = async (forceRefresh = false) => {
         setLoading(true);
         try {
-            // Recalling from cached version.
             const cachedData = localStorage.getItem("cached_students");
             if (cachedData && !forceRefresh) {
                 setStudents(JSON.parse(cachedData));
                 setLoading(false);
                 return;
             }
-            // Fetching and cached.
             const response = await api.get("api/students/all");
             if (!response.ok) {
                 throw new Error("Failed to fetch students");
@@ -120,7 +117,6 @@ export default function ListAllStudents() {
         fetchStudents();
     }, []);
 
-    // Export number functions
     const handleExportNumbers = () => {
         if (filteredStudents.length === 0) {
             alert("No students to export.")
@@ -133,7 +129,6 @@ export default function ListAllStudents() {
 
         const blob = new Blob([numbersText], { type: 'text/plain' })
         const url = URL.createObjectURL(blob)
-
         const link = document.createElement('a')
         link.href = url
         link.download = `student_numbers_${new Date().toISOString().slice(0, 10)}.txt`
@@ -159,8 +154,10 @@ export default function ListAllStudents() {
 
     return (
         <>
+            {/* FIX: NavBar is strictly outside the container */}
+            <NavBar />
+            
             <div className="student-list-dashboard">
-                <NavBar />
                 <h2>Student List</h2>
                 <div className="search-tools">
                     <div className="button">
@@ -241,7 +238,6 @@ export default function ListAllStudents() {
                                     {StudentTableColumns.map((col) => (
                                         <th key={col.key}>{col.label}</th>
                                     ))}
-                                    {/* Action Column for Edit */}
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -301,7 +297,6 @@ export default function ListAllStudents() {
             {editingStudent && (
                 <div className="modal-overlay">
                     <div className="modal-wrapper">
-                        {/* Pass the student data, close handler, and success handler */}
                         <CreateStudent 
                             studentToEdit={editingStudent} 
                             onClose={() => setEditingStudent(null)} 
