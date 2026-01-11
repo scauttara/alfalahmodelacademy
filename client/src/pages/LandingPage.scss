@@ -1,0 +1,224 @@
+// Variables
+$primary-color: #2c3e50;
+$accent-color: #3498db;
+$text-light: #ffffff;
+$text-dark: #333333;
+$bg-light: #f9f9f9;
+$font-stack: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+.landing-page {
+    font-family: $font-stack;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: $bg-light;
+
+    // Loading & Error States
+    .loading-screen, .empty-content {
+        height: 80vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: $primary-color;
+    }
+
+    // Hero Section
+    .hero-section {
+        height: 85vh;
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed; // Parallax effect
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: $text-light;
+        padding: 0 20px;
+        margin-top: -60px; // Pull up behind transparent nav if needed, otherwise remove
+
+        .hero-content {
+            max-width: 800px;
+            animation: fadeInUp 1s ease-out;
+
+            .hero-logo {
+                width: 100px;
+                height: 100px;
+                object-fit: contain;
+                margin-bottom: 1.5rem;
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 50%;
+                padding: 10px;
+                backdrop-filter: blur(5px);
+            }
+
+            h1 {
+                font-size: 3.5rem;
+                margin-bottom: 0.5rem;
+                font-weight: 700;
+                text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            }
+
+            .motto {
+                font-size: 1.5rem;
+                font-weight: 300;
+                margin-bottom: 2.5rem;
+                opacity: 0.9;
+            }
+
+            .cta-button {
+                display: inline-block;
+                padding: 15px 40px;
+                background-color: $accent-color;
+                color: $text-light;
+                text-decoration: none;
+                font-size: 1.1rem;
+                font-weight: 600;
+                border-radius: 50px;
+                transition: all 0.3s ease;
+                box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+
+                &:hover {
+                    background-color: darken($accent-color, 10%);
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 20px rgba(52, 152, 219, 0.6);
+                }
+            }
+        }
+    }
+
+    // Main Content Styling
+    main {
+        flex: 1;
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+    }
+
+    // Intro / Quote Section
+    .intro-section {
+        padding: 5rem 0;
+        background: white;
+        text-align: center;
+
+        .intro-card {
+            max-width: 800px;
+            margin: 0 auto;
+            
+            .established-badge {
+                background: #eee;
+                color: #666;
+                padding: 5px 15px;
+                border-radius: 20px;
+                font-size: 0.9rem;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+
+            h2 {
+                color: $primary-color;
+                margin-top: 1rem;
+                font-size: 2rem;
+            }
+
+            .school-quote {
+                font-size: 1.5rem;
+                font-style: italic;
+                color: #555;
+                margin-top: 2rem;
+                line-height: 1.6;
+                position: relative;
+                
+                &::before {
+                    content: "“";
+                    font-size: 4rem;
+                    color: rgba($accent-color, 0.2);
+                    position: absolute;
+                    top: -20px;
+                    left: -20px;
+                }
+            }
+        }
+    }
+
+    // Info Grid Section
+    .info-grid-section {
+        padding: 4rem 0 6rem;
+        background-color: $bg-light;
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .info-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            text-align: center;
+            transition: transform 0.3s ease;
+            border-top: 4px solid transparent;
+
+            &:hover {
+                transform: translateY(-5px);
+                border-top: 4px solid $accent-color;
+            }
+
+            i {
+                font-style: normal;
+                font-size: 2.5rem;
+                margin-bottom: 1rem;
+                display: block;
+            }
+
+            h3 {
+                color: $primary-color;
+                margin-bottom: 1rem;
+            }
+
+            p {
+                color: #666;
+                line-height: 1.6;
+                word-break: break-word; // Prevents long emails/URLs from breaking layout
+            }
+
+            a {
+                color: $accent-color;
+                text-decoration: none;
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+
+    // Responsive Adjustments
+    @media (max-width: 768px) {
+        .hero-section {
+            h1 { font-size: 2.5rem; }
+            .motto { font-size: 1.2rem; }
+        }
+        
+        .intro-section {
+            padding: 3rem 0;
+            .school-quote { font-size: 1.2rem; }
+        }
+    }
+}
+
+// Simple animation
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

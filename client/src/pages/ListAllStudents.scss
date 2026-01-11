@@ -1,83 +1,199 @@
 .student-list-dashboard {
-  display: flex;
-  flex-direction: column;
-  width: 100;
-  align-items: center;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
 
-  .search-tools {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-
-    .button {
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      gap: 1vw;
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
     }
 
-    .search-section {
-      display: flex;
-      justify-content: center;
-      padding: 1vw;
+    .search-tools {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
 
-      input {
-        width: 80%;
-        max-width: 450px;
-        padding-left: 4vw;
-        border-radius: 99vw;
-      }
+        .button {
+            display: flex;
+            gap: 10px;
+
+            button {
+                padding: 10px 15px;
+                background-color: #007bff;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 14px;
+                transition: background 0.3s;
+
+                &:hover {
+                    background-color: #0056b3;
+                }
+
+                &:disabled {
+                    background-color: #ccc;
+                    cursor: not-allowed;
+                }
+            }
+        }
+
+        .search-section {
+            input {
+                padding: 10px;
+                width: 300px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                font-size: 14px;
+
+                &:focus {
+                    outline: none;
+                    border-color: #007bff;
+                }
+            }
+        }
     }
-  }
+
+    .filter-settings {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 10px;
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+        select {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            background: white;
+            cursor: pointer;
+
+            &:focus {
+                border-color: #007bff;
+                outline: none;
+            }
+        }
+    }
+
+    .student-list {
+        overflow-x: auto;
+        
+        p {
+            margin-bottom: 10px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .student-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+
+            th, td {
+                padding: 12px 15px;
+                text-align: left;
+                border-bottom: 1px solid #eee;
+                font-size: 14px;
+            }
+
+            th {
+                background-color: #007bff;
+                color: white;
+                font-weight: 600;
+                white-space: nowrap;
+            }
+
+            tr:hover {
+                background-color: #f1f1f1;
+            }
+
+            tr:last-child td {
+                border-bottom: none;
+            }
+
+            strong {
+                color: #333;
+            }
+
+            // Edit Button Styles
+            .edit-btn {
+                background-color: #ffc107;
+                color: #333;
+                border: none;
+                padding: 6px 12px;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 12px;
+                font-weight: bold;
+                transition: all 0.2s;
+
+                &:hover {
+                    background-color: #e0a800;
+                }
+            }
+        }
+    }
 }
 
-.filter-settings{
+// === MODAL STYLES ===
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7); // Dark transparent backdrop
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 1vw;
-    padding: 1vw;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    backdrop-filter: blur(3px); // Optional blur effect
+    padding: 20px; // Prevent modal from touching screen edges on mobile
 
-    select{
-        cursor: pointer;
-        border-radius: 99vw;
-        border: 1px solid black;
-        box-shadow: 0px 0px 5px 0px #6d5dd9;
-        padding: 1vh;
+    .modal-wrapper {
+        background: white;
+        width: 100%;
+        max-width: 900px; // Match form width
+        max-height: 90vh; // Prevent overflow on small screens
+        overflow-y: auto; // Scroll inside modal if form is long
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        position: relative;
+        animation: slideIn 0.3s ease-out;
+
+        // Ensure the imported CreateStudent form looks good inside
+        .create-user {
+            // Override full-page styles if necessary
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            box-shadow: none;
+        }
+
+        /* Note: The close button is inside CreateStudent.jsx in the new logic,
+           but if you wanted an external one, you could add it here.
+        */
     }
 }
 
-.student-list {
-  display: flex;
-  flex-direction: column;
-  width: 100vw;
-  align-items: center;
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    max-width: 1024px;
-  }
-
-  th,
-  td {
-    text-align: left;
-    padding: 8px;
-    border: 1px solid #ddd;
-    
-  }
-
-  th {
-    background-color: #f2f2f2;
-  }
-
-  tr:nth-child(even) {
-    background-color: #f2f2f2;
-  }
-
-  tr:hover {
-    background-color: #ddd;
-  }
+@keyframes slideIn {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }

@@ -1,0 +1,108 @@
+// Variables
+$header-bg: #ffffff;
+$text-primary: #1a237e; // Deep academic blue
+$text-secondary: #546e7a;
+$accent-color: #ffc107; // Gold/Amber for highlights
+$border-color: #e0e0e0;
+
+.page-header {
+    background-color: $header-bg;
+    padding: 2rem 1.5rem;
+    border-bottom: 3px solid $accent-color; // A nice bottom border accent
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+
+    .header-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    // 1. Logo Styling
+    .logo-wrapper {
+        .school-logo {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+        }
+
+        .logo-placeholder {
+            font-size: 4rem;
+            line-height: 1;
+        }
+    }
+
+    // 2. Text Wrapper
+    .text-wrapper {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        // 3. School Name
+        .school-name {
+            color: $text-primary;
+            margin: 0;
+            font-size: 2rem; // Larger site name
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            line-height: 1.2;
+        }
+
+        // 4. Motto
+        .school-motto {
+            color: $text-secondary;
+            margin: 0.5rem 0;
+            font-size: 1.1rem;
+            font-style: italic;
+            font-family: "Georgia", serif; // Serif font for motto looks classic
+        }
+
+        // 5. Established Year
+        .est-year {
+            display: inline-block;
+            background-color: $text-primary;
+            color: white;
+            padding: 0.2rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    }
+
+    // Optional Page Title Divider (The line between Header and Content)
+    .page-title-divider {
+        margin-top: 1.5rem;
+        padding-top: 1rem;
+        border-top: 1px solid $border-color;
+        width: 100%;
+        text-align: center;
+
+        h2 {
+            font-size: 1.5rem;
+            color: #333;
+            font-weight: 600;
+            margin: 0;
+        }
+    }
+
+    // Responsive: On larger screens, maybe put logo side-by-side with text?
+    // Currently keeping it centered for that "Official Document" feel.
+    @media (max-width: 768px) {
+        padding: 1.5rem 1rem;
+        
+        .logo-wrapper .school-logo {
+            width: 80px;
+            height: 80px;
+        }
+
+        .text-wrapper .school-name {
+            font-size: 1.5rem;
+        }
+    }
+}

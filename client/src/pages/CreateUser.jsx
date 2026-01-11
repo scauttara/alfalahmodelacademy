@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import NavBar from "../components/NavBar";
+import NavBar from "../components/NavBar/NavBar.jsx";
 import './CreateUser.scss'
 
 import { api } from '../utils/api.js';

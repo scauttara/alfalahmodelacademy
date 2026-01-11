@@ -2,19 +2,22 @@ import React, { useState, useEffect, useMemo } from "react";
 import "./ListAllStudents.scss";
 
 import {
-    InitialStudentForm,
     GenderOptions,
     ClassLabels,
     ClassOptions,
     StudentTableColumns,
 } from "../utils/studentConstants.js";
 import { api } from "../utils/api";
-import NavBar from "../components/NavBar";
+import NavBar from "../components/NavBar/NavBar.jsx";
+import CreateStudent from "./CreateStudent.jsx"; // Import the Create/Edit Form
 
 export default function ListAllStudents() {
     const [loading, setLoading] = useState(false);
     const [students, setStudents] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
+    
+    // State to track which student is being edited
+    const [editingStudent, setEditingStudent] = useState(null);
 
     const [filters, setFilters] = useState({
         batchCategory: "",
@@ -34,12 +37,11 @@ export default function ListAllStudents() {
             [name]: value,
         }));
     };
+
     const filteredStudents = useMemo(() => {
         return students.filter((student) => {
             // Text Search
-
             const query = searchTerm.toLowerCase().trim();
-
             const matchesSearch =
                 !query ||
                 [
@@ -61,24 +63,12 @@ export default function ListAllStudents() {
                 matchesBatch = allowedClasses.includes(student.classGrade);
             }
             // Other Filters
-            const matchesClass = filters.classGrade
-                ? student.classGrade === filters.classGrade
-                : true;
-            const matchesVersion = filters.version
-                ? student.version === filters.version
-                : true;
-            const matchesGroup = filters.group
-                ? student.group === filters.group
-                : true;
-            const matchesGender = filters.gender
-                ? student.gender === filters.gender
-                : true;
-            const matchesReligion = filters.religion
-                ? student.religion === filters.religion
-                : true;
-            const matchesResidentialStatus = filters.residentialStatus
-                ? student.residentialStatus === filters.residentialStatus
-                : true;
+            const matchesClass = filters.classGrade ? student.classGrade === filters.classGrade : true;
+            const matchesVersion = filters.version ? student.version === filters.version : true;
+            const matchesGroup = filters.group ? student.group === filters.group : true;
+            const matchesGender = filters.gender ? student.gender === filters.gender : true;
+            const matchesReligion = filters.religion ? student.religion === filters.religion : true;
+            const matchesResidentialStatus = filters.residentialStatus ? student.residentialStatus === filters.residentialStatus : true;
 
             // Transport Boolean Conversion
             let matchesTransport = true;
@@ -86,8 +76,6 @@ export default function ListAllStudents() {
                 const isTrue = filters.isUsingTransport === "true";
                 matchesTransport = student.isUsingTransport === isTrue;
             }
-
-            // Match both Drop-Down and Search
 
             return (
                 matchesSearch &&
@@ -132,7 +120,7 @@ export default function ListAllStudents() {
         fetchStudents();
     }, []);
 
-// Export number functions with , and new lines. 
+    // Export number functions
     const handleExportNumbers = () => {
         if (filteredStudents.length === 0) {
             alert("No students to export.")
@@ -148,16 +136,13 @@ export default function ListAllStudents() {
 
         const link = document.createElement('a')
         link.href = url
-        // folder creation with naming. 
         link.download = `student_numbers_${new Date().toISOString().slice(0, 10)}.txt`
         document.body.appendChild(link)
         link.click()
         document.body.removeChild(link)
         URL.revokeObjectURL(url)
-
     }
 
-    // Clear filter
     const clearFilters = () => {
         setFilters({
             batchCategory: "",
@@ -171,8 +156,6 @@ export default function ListAllStudents() {
         });
         setSearchTerm("");
     };
-
-    // Searching and Filtering using useMemo hook.
 
     return (
         <>
@@ -189,7 +172,6 @@ export default function ListAllStudents() {
                     </div>
                     <div className="search-section">
                         <br />
-
                         <input
                             type="text"
                             placeholder="🔍 Search by Names and Contacts"
@@ -198,17 +180,10 @@ export default function ListAllStudents() {
                         />
                     </div>
                 </div>
-                {
-                    // FILTER DASHBOARD
-                }
 
+                {/* FILTER DASHBOARD */}
                 <div className="filter-settings">
-
-                    <select
-                        name="batchCategory"
-                        value={filters.batchCategory}
-                        onChange={handleFilterChange}
-                    >
+                    <select name="batchCategory" value={filters.batchCategory} onChange={handleFilterChange}>
                         <option value="">Batches</option>
                         {Object.keys(ClassOptions).map((cat) => (
                             <option key={cat} value={cat}>
@@ -216,23 +191,13 @@ export default function ListAllStudents() {
                             </option>
                         ))}
                     </select>
-                    <select
-                        name="classGrade"
-                        value={filters.classGrade}
-                        onChange={handleFilterChange}
-                    >
+                    <select name="classGrade" value={filters.classGrade} onChange={handleFilterChange}>
                         <option value="">Classes</option>
                         {Object.entries(ClassLabels).map(([key, label]) => (
-                            <option key={key} value={key}>
-                                {label}
-                            </option>
+                            <option key={key} value={key}>{label}</option>
                         ))}
                     </select>
-                    <select
-                        name="version"
-                        value={filters.version}
-                        onChange={handleFilterChange}
-                    >
+                    <select name="version" value={filters.version} onChange={handleFilterChange}>
                         <option value="">Versions</option>
                         <option value="Bangla">Bangla</option>
                         <option value="English">English</option>
@@ -244,51 +209,31 @@ export default function ListAllStudents() {
                         <option value="Arts">Arts</option>
                         <option value="N/A">General</option>
                     </select>
-                    <select
-                        name="gender"
-                        value={filters.gender}
-                        onChange={handleFilterChange}
-                    >
+                    <select name="gender" value={filters.gender} onChange={handleFilterChange}>
                         <option value="">Genders</option>
                         {GenderOptions.map((gender) => (
-                            <option key={gender} value={gender}>
-                                {gender}
-                            </option>
+                            <option key={gender} value={gender}>{gender}</option>
                         ))}
                     </select>
-                    <select
-                        name="residentialStatus"
-                        value={filters.residentialStatus}
-                        onChange={handleFilterChange}
-                    >
+                    <select name="residentialStatus" value={filters.residentialStatus} onChange={handleFilterChange}>
                         <option value="">Residential Status</option>
                         <option value="Residential">Residential</option>
                         <option value="Non-Residential">Non-Residential</option>
                         <option value="Day-Care">Day-Care</option>
                     </select>
-                    <select
-                        name="isUsingTransport"
-                        value={filters.isUsingTransport}
-                        onChange={handleFilterChange}
-                    >
+                    <select name="isUsingTransport" value={filters.isUsingTransport} onChange={handleFilterChange}>
                         <option value="">Transport</option>
                         <option value="true">Yes</option>
                         <option value="false">No</option>
                     </select>
                 </div>
-                {
-                    // LISTING STUDENTS
-                }
 
+                {/* LISTING STUDENTS */}
                 {students.length > 0 ? (
                     <div className="student-list">
-
-
                         {filteredStudents.length > 1 ? (
                             <p> Found {filteredStudents.length} students.</p>
                         ) : (<p>Found {filteredStudents.length} student.</p>)}
-
-
 
                         <table className="student-table">
                             <thead>
@@ -296,6 +241,8 @@ export default function ListAllStudents() {
                                     {StudentTableColumns.map((col) => (
                                         <th key={col.key}>{col.label}</th>
                                     ))}
+                                    {/* Action Column for Edit */}
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -322,29 +269,49 @@ export default function ListAllStudents() {
                                             <td>
                                                 {student.residentialStatus}
                                                 {student.isUsingTransport && (
-                                                    <>
-                                                        <br /> <strong>Transport</strong>
-                                                    </>
+                                                    <><br /> <strong>Transport</strong></>
                                                 )}
+                                            </td>
+                                            
+                                            {/* Edit Button */}
+                                            <td>
+                                                <button 
+                                                    className="edit-btn"
+                                                    onClick={() => setEditingStudent(student)}
+                                                >
+                                                    Edit
+                                                </button>
                                             </td>
                                         </tr>
                                     ))
                                 ) : (
-                                    <>
-                                        <tr>
-                                            <td colSpan={StudentTableColumns.length}>
-                                                No student match these filters.
-                                            </td>
-                                        </tr>
-                                    </>
+                                    <tr>
+                                        <td colSpan={StudentTableColumns.length + 1}>
+                                            No student match these filters.
+                                        </td>
+                                    </tr>
                                 )}
                             </tbody>
                         </table>
                     </div>
-                ) : (
-                    <></>
-                )}
+                ) : (<></>)}
             </div>
+
+            {/* === EDIT MODAL OVERLAY === */}
+            {editingStudent && (
+                <div className="modal-overlay">
+                    <div className="modal-wrapper">
+                        {/* Pass the student data, close handler, and success handler */}
+                        <CreateStudent 
+                            studentToEdit={editingStudent} 
+                            onClose={() => setEditingStudent(null)} 
+                            onSuccess={() => {
+                                fetchStudents(true); // Force API refresh after edit
+                            }}
+                        />
+                    </div>
+                </div>
+            )}
         </>
     );
 }
