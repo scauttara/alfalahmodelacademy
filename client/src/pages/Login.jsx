@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { api } from '../utils/api.js';
 import Header from "../components/Header/Header.jsx"; // Use the branding header
 import './Login.scss';
+import NavBar from "../components/NavBar/NavBar.jsx";
+import Footer from "../components/Footer/Footer.jsx";
 
 const Login = () => {
     const [formData, setFormData] = useState({
@@ -51,6 +53,9 @@ const Login = () => {
     }
 
     return (
+        <>
+
+        <NavBar/>
         <div className="login-page-wrapper">
             {/* School Branding Header */}
             <div className="login-header-container">
@@ -100,6 +105,8 @@ const Login = () => {
                 </form>
             </div>
         </div>
+        <Footer/>
+        </>
     )
 }
 

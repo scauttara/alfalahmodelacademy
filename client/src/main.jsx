@@ -22,7 +22,7 @@ createRoot(document.getElementById('root')).render(
           <Route path="/" element={<LandingPage />} />
           <Route path="/dashboard" element={<App />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/create-user" element={<CreateUser />} />
+          <Route path="/create-user" element={<RoleGate allowedRoles={['super', 'admin']}><CreateUser /><CreateUser /></RoleGate>} />
           <Route path="/create-student" element={<CreateStudent />} />
           <Route path='/all-students' element={<ListAllStudents />} />
           <Route path='/school-settings' element={<RoleGate allowedRoles={['super', 'admin']}>
