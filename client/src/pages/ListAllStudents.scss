@@ -136,9 +136,27 @@
                 font-size: 12px;
                 font-weight: bold;
                 transition: all 0.2s;
+                margin-right: 8px;
 
                 &:hover {
                     background-color: #e0a800;
+                }
+            }
+
+            // Delete Button Styles
+            .delete-btn {
+                background-color: #dc3545;
+                color: white;
+                border: none;
+                padding: 6px 12px;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 12px;
+                font-weight: bold;
+                transition: all 0.2s;
+
+                &:hover {
+                    background-color: #c82333;
                 }
             }
         }
@@ -179,6 +197,71 @@
             margin: 0;
             padding: 0;
             box-shadow: none;
+        }
+
+        // Delete Modal Specific Styles
+        &.delete-modal {
+            max-width: 500px;
+            text-align: center;
+
+            h3 {
+                color: #dc3545;
+                margin-bottom: 15px;
+                font-size: 24px;
+            }
+
+            p {
+                color: #555;
+                margin-bottom: 12px;
+                line-height: 1.5;
+
+                &.warning-text {
+                    color: #d32f2f;
+                    font-size: 13px;
+                    background-color: #ffebee;
+                    padding: 12px;
+                    border-radius: 5px;
+                    border-left: 4px solid #dc3545;
+                    text-align: left;
+                    margin-bottom: 20px;
+                }
+            }
+
+            .delete-actions {
+                display: flex;
+                gap: 12px;
+                justify-content: center;
+                margin-top: 20px;
+
+                button {
+                    padding: 10px 24px;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    font-size: 14px;
+                    font-weight: 600;
+                    transition: all 0.3s;
+
+                    &.confirm-delete-btn {
+                        background-color: #dc3545;
+                        color: white;
+
+                        &:hover {
+                            background-color: #c82333;
+                            transform: scale(1.05);
+                        }
+                    }
+
+                    &.cancel-delete-btn {
+                        background-color: #6c757d;
+                        color: white;
+
+                        &:hover {
+                            background-color: #5a6268;
+                        }
+                    }
+                }
+            }
         }
 
         /* Note: The close button is inside CreateStudent.jsx in the new logic,

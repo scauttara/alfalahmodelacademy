@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { api } from "../utils/api.js";
+import { studentService } from "../utils/studentService.js";
 import "./CreateStudent.scss";
 import NavBar from "../components/NavBar/NavBar.jsx";
 import { InitialStudentForm, ClassLabels, ClassOptions } from '../utils/studentConstants.js';
@@ -84,20 +84,18 @@ const CreateStudent = ({ studentToEdit = null, onClose = null, onSuccess = null 
         // --- FIX END ---
 
         try {
-            let response;
+            let result;
             if (studentToEdit) {
-                response = await api.put(`api/students/${studentToEdit._id}`, payload);
+                result = await studentService.updateStudent(studentToEdit._id, payload);
             } else {
-                response = await api.post("api/students/create", payload);
+                result = await studentService.createStudent(payload);
             }
 
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(data.message || "Operation failed");
+            if (!result.success) {
+                throw new Error(result.error);
             }
 
-            setMessage(studentToEdit ? "Updated Successfully!" : `Success! Student ${data.user.name} created.`);
+            setMessage(studentToEdit ? "Updated Successfully!" : `Success! Student created.`);
             setStatusType("success");
 
             if (studentToEdit) {

@@ -8,6 +8,7 @@ import {
     StudentTableColumns,
 } from "../utils/studentConstants.js";
 import { api } from "../utils/api";
+import { studentService } from "../utils/studentService.js";
 import NavBar from "../components/NavBar/NavBar.jsx";
 import CreateStudent from "./CreateStudent.jsx";
 
@@ -18,6 +19,9 @@ export default function ListAllStudents() {
     
     // State to track which student is being edited
     const [editingStudent, setEditingStudent] = useState(null);
+    
+    // State to track delete confirmation
+    const [deleteConfirm, setDeleteConfirm] = useState(null);
 
     const [filters, setFilters] = useState({
         batchCategory: "",
@@ -99,13 +103,14 @@ export default function ListAllStudents() {
                 setLoading(false);
                 return;
             }
-            const response = await api.get("api/students/all");
-            if (!response.ok) {
-                throw new Error("Failed to fetch students");
+            
+            const result = await studentService.getAllStudents();
+            if (!result.success) {
+                throw new Error(result.error);
             }
-            const data = await response.json();
-            setStudents(data.students);
-            localStorage.setItem("cached_students", JSON.stringify(data.students));
+            
+            setStudents(result.data);
+            localStorage.setItem("cached_students", JSON.stringify(result.data));
         } catch (error) {
             console.error("Fetch Students Error:", error);
         } finally {
@@ -150,6 +155,30 @@ export default function ListAllStudents() {
             isUsingTransport: "",
         });
         setSearchTerm("");
+    };
+
+    const handleDeleteStudent = async (studentId, studentName) => {
+        try {
+            const result = await studentService.deleteStudent(studentId);
+            if (!result.success) {
+                alert(`Failed to delete: ${result.error}`);
+                return;
+            }
+            alert(`${studentName} has been deleted successfully.`);
+            setDeleteConfirm(null);
+            fetchStudents(true); // Force refresh after deletion
+        } catch (error) {
+            console.error("Delete Error:", error);
+            alert("Error deleting student. Please try again.");
+        }
+    };
+
+    const openDeleteConfirm = (student) => {
+        setDeleteConfirm(student);
+    };
+
+    const closeDeleteConfirm = () => {
+        setDeleteConfirm(null);
     };
 
     return (
@@ -277,6 +306,12 @@ export default function ListAllStudents() {
                                                 >
                                                     Edit
                                                 </button>
+                                                <button 
+                                                    className="delete-btn"
+                                                    onClick={() => openDeleteConfirm(student)}
+                                                >
+                                                    Delete
+                                                </button>
                                             </td>
                                         </tr>
                                     ))
@@ -304,6 +339,31 @@ export default function ListAllStudents() {
                                 fetchStudents(true); // Force API refresh after edit
                             }}
                         />
+                    </div>
+                </div>
+            )}
+
+            {/* === DELETE CONFIRMATION MODAL === */}
+            {deleteConfirm && (
+                <div className="modal-overlay">
+                    <div className="modal-wrapper delete-modal">
+                        <h3>Confirm Deletion</h3>
+                        <p>Are you sure you want to delete <strong>{deleteConfirm.userId?.name}</strong>?</p>
+                        <p className="warning-text">This action cannot be undone. Both the student profile and associated user account will be permanently deleted.</p>
+                        <div className="delete-actions">
+                            <button 
+                                className="confirm-delete-btn"
+                                onClick={() => handleDeleteStudent(deleteConfirm._id, deleteConfirm.userId?.name)}
+                            >
+                                Delete Permanently
+                            </button>
+                            <button 
+                                className="cancel-delete-btn"
+                                onClick={closeDeleteConfirm}
+                            >
+                                Cancel
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}

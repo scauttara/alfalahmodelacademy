@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { api } from '../../utils/api';
+import { studentService } from '../../utils/studentService';
 import NavBar from '../../components/NavBar/NavBar';
 const AdmissionRequests = () => {
     const [requests, setRequests] = useState([]);
@@ -7,15 +7,13 @@ const AdmissionRequests = () => {
 
     const fetchRequests = async () => {
         try {
-            // We need to filter for 'pending' users. 
-            // Ideally, modify getAllStudents API to accept query param ?status=pending
-            // For now, let's assume we fetch all and filter client-side or creating a specific API is better.
-            const response = await api.get('api/students/all'); 
-            const data = await response.json();
+            const result = await studentService.getPendingRequests();
             
-            // Filter only pending students
-            const pending = data.students.filter(s => s.userId?.status === 'pending');
-            setRequests(pending);
+            if (result.success) {
+                setRequests(result.data);
+            } else {
+                console.error(result.error);
+            }
         } catch (error) {
             console.error(error);
         } finally {
@@ -28,20 +26,24 @@ const AdmissionRequests = () => {
     const handleApprove = async (studentId) => {
         if(!window.confirm("Approve this student? They will be able to login.")) return;
         try {
-            await api.put(`api/students/approve/${studentId}`, {});
+            const result = await studentService.approveAdmission(studentId);
+            if (!result.success) throw new Error(result.error);
+            alert(result.message);
             fetchRequests(); // Refresh list
         } catch (error) {
-            alert("Failed to approve");
+            alert(`Failed to approve: ${error.message}`);
         }
     };
 
     const handleReject = async (studentId) => {
         if(!window.confirm("Reject and delete this application?")) return;
         try {
-            await api.delete(`api/students/${studentId}`); // Reuse existing delete
+            const result = await studentService.deleteStudent(studentId);
+            if (!result.success) throw new Error(result.error);
+            alert(result.message);
             fetchRequests();
         } catch (error) {
-            alert("Failed to reject");
+            alert(`Failed to reject: ${error.message}`);
         }
     };
 

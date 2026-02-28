@@ -2,24 +2,18 @@ import React, { useState } from 'react';
 import NavBar from '../../components/NavBar/NavBar';
 import Footer from '../../components/Footer/Footer';
 import StudentForm from '../../components/StudentForm/StudentForm';
-import { api } from '../../utils/api';
+import { studentService } from '../../utils/studentService';
 
 const Admission = () => {
     const [status, setStatus] = useState({ type: '', msg: '' });
 
     const handleAdmissionSubmit = async (formData) => {
         setStatus({ type: 'info', msg: 'Submitting your application...' });
-        
-        // Clean data (remove empty email/dates) - same logic as your CreateStudent
-        const payload = { ...formData };
-        if (!payload.email) delete payload.email;
-        if (!payload.dateOfBirth) delete payload.dateOfBirth;
 
         try {
-            const response = await api.post('api/students/admission', payload); // Public Endpoint
-            const data = await response.json();
+            const result = await studentService.submitAdmission(formData);
 
-            if (!response.ok) throw new Error(data.message);
+            if (!result.success) throw new Error(result.error);
 
             setStatus({ type: 'success', msg: 'Application Submitted! Admin will review it shortly.' });
             

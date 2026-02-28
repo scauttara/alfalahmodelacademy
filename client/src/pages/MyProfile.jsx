@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { api } from '../utils/api';
+import { studentService } from '../utils/studentService';
 import NavBar from '../components/NavBar/NavBar';
 import StudentForm from '../components/StudentForm/StudentForm';
 import './MyProfile.scss'; 
@@ -15,16 +15,13 @@ const MyProfile = () => {
         const fetchMyProfile = async () => {
             try {
                 // Fetch using the specific ID endpoint
-                const response = await api.get(`api/students/${user._id}`);
-                const data = await response.json();
+                const result = await studentService.getStudentById(user._id);
                 
-                // --- FIX: Logic updated for Single Student Response ---
-                if (response.ok && data.student) {
-                    setStudentData(data.student);
+                if (result.success && result.data) {
+                    setStudentData(result.data);
                 } else {
-                    console.error("Profile check failed:", data);
+                    console.error("Profile check failed:", result.error);
                 }
-                // -----------------------------------------------------
 
             } catch (error) {
                 console.error(error);
@@ -47,13 +44,12 @@ const MyProfile = () => {
             delete payload.batchCategory;
             delete payload.status;
 
-            const response = await api.put(`api/students/${studentData._id}`, payload);
-            const data = await response.json();
-
-            if(!response.ok) throw new Error(data.message);
+            const result = await studentService.updateStudent(studentData._id, payload);
+            
+            if(!result.success) throw new Error(result.error);
 
             setMessage({ text: 'Profile Updated Successfully!', type: 'success' });
-            setStudentData(data.student); 
+            setStudentData(result.data); 
         } catch (error) {
             setMessage({ text: error.message, type: 'error' });
         }
